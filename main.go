@@ -21,5 +21,5 @@ func main() {
 		}),
 	))
 
-w.ShowAndRun()
+	w.ShowAndRun()
 }
