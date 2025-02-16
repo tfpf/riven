@@ -10,8 +10,8 @@ import (
 )
 
 func main() {
-	c := config.NewConfig()
-	fmt.Println(c)
+	config, err := config.NewConfig()
+	fmt.Println(config, err)
 	os.Setenv("FYNE_FONT", `C:\Users\vpaij\AppData\Local\Microsoft\Windows\Fonts\RecMonoCasualNerdFont-Regular.ttf`)
 	os.Setenv("FYNE_FONT", `C:\Windows\Fonts\comic.ttf`)
 	a := app.New()
