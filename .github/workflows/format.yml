@@ -1,0 +1,9 @@
+name: format
+on: [push, workflow_dispatch]
+
+jobs:
+  Go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: gofmt -l
