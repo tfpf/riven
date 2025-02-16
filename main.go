@@ -9,9 +9,28 @@ import (
 	"os"
 )
 
+// setUpStructuredLogging ensures that the function name and line number are
+// logged along with the usual attributes in JSON to standard output.
+func setUpStructuredLogging() {
+	handlerOpts := &slog.HandlerOptions{
+		AddSource: true,
+		ReplaceAttr: func(_ []string, attr slog.Attr) slog.Attr {
+			if attr.Key == slog.SourceKey {
+				if source, ok := attr.Value.Any().(*slog.Source); ok {
+					// The function name tells us which file it is from, so
+					// don't log the file.
+					source.File = ""
+				}
+			}
+			return attr
+		},
+	}
+	handler := slog.NewJSONHandler(os.Stdout, handlerOpts)
+	slog.SetDefault(slog.New(handler))
+}
+
 func main() {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	slog.SetDefault(logger)
+	setUpStructuredLogging()
 
 	_, _ = config.NewConfig()
 	os.Setenv("FYNE_FONT", `C:\Users\vpaij\AppData\Local\Microsoft\Windows\Fonts\RecMonoCasualNerdFont-Regular.ttf`)
