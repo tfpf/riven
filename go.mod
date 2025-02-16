@@ -1,4 +1,4 @@
-module riven
+module github.com/tfpf/riven
 
 go 1.24.0
 
