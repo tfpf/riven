@@ -26,7 +26,8 @@ func setUpStructuredLogging() {
 		},
 	}
 	handler := slog.NewJSONHandler(os.Stdout, handlerOpts)
-	slog.SetDefault(slog.New(handler))
+	logger := slog.New(handler)
+	slog.SetDefault(logger)
 }
 
 func main() {
