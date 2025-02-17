@@ -33,9 +33,8 @@ func setUpStructuredLogging() {
 func main() {
 	setUpStructuredLogging()
 
-	_, _ = config.NewConfig()
-	os.Setenv("FYNE_FONT", `C:\Users\vpaij\AppData\Local\Microsoft\Windows\Fonts\RecMonoCasualNerdFont-Regular.ttf`)
-	os.Setenv("FYNE_FONT", `C:\Windows\Fonts\comic.ttf`)
+	_, _ = config.Read()
+
 	a := app.New()
 	w := a.NewWindow("Hello")
 
