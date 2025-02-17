@@ -1,8 +1,12 @@
 GO = go
 
-.PHONY: run
+.PHONY: run build fmt
 
-run:
-	$(GO) fmt ./...
-	$(GO) build -buildvcs=false -ldflags='-s -w' -v
+run: build
 	./riven
+
+build: fmt
+	$(GO) build -buildvcs=false -ldflags='-s -w' -v
+
+fmt:
+	$(GO) fmt ./...
