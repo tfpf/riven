@@ -5,6 +5,7 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 	"github.com/tfpf/riven/config"
+	"github.com/tfpf/riven/logging"
 	"log/slog"
 	"os"
 )
@@ -14,18 +15,9 @@ import (
 func setUpStructuredLogging() {
 	handlerOpts := &slog.HandlerOptions{
 		AddSource: true,
-		ReplaceAttr: func(_ []string, attr slog.Attr) slog.Attr {
-			if attr.Key == slog.SourceKey {
-				if source, ok := attr.Value.Any().(*slog.Source); ok {
-					// The function name tells us which file it is from, so
-					// don't log the file.
-					source.File = ""
-				}
-			}
-			return attr
-		},
+		Level:     slog.LevelInfo,
 	}
-	handler := slog.NewJSONHandler(os.Stdout, handlerOpts)
+	handler := logging.NewJSONHandler(os.Stdout, handlerOpts)
 	logger := slog.New(handler).WithGroup("msg_args")
 	slog.SetDefault(logger)
 }
