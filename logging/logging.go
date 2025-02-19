@@ -13,15 +13,15 @@ type JSONHandler struct {
 }
 
 func NewJSONHandler(writer io.Writer, options *slog.HandlerOptions) *JSONHandler {
-	handler := &JSONHandler{
+	h := &JSONHandler{
 		writer:    writer,
 		addSource: options.AddSource,
 		level:     options.Level,
 	}
-	if handler.level == nil {
-		handler.level = slog.LevelInfo
+	if h.level == nil {
+		h.level = slog.LevelInfo
 	}
-	return handler
+	return h
 }
 
 // Enabled reports whether handling is done at level.
