@@ -7,23 +7,10 @@ import (
 	"github.com/tfpf/riven/config"
 	"github.com/tfpf/riven/logging"
 	"log/slog"
-	"os"
 )
 
-// setUpStructuredLogging ensures that the function name and line number are
-// logged along with the usual attributes in JSON to standard output.
-func setUpStructuredLogging() {
-	handlerOpts := &slog.HandlerOptions{
-		AddSource: true,
-		Level:     slog.LevelInfo,
-	}
-	handler := logging.NewJSONHandler(os.Stdout, handlerOpts)
-	logger := slog.New(handler).WithGroup("msg_args")
-	slog.SetDefault(logger)
-}
-
 func main() {
-	setUpStructuredLogging()
+	slog.SetDefault(logging.NewJSONLogger())
 
 	_, _ = config.Read()
 

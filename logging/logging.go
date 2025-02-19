@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 	"log/slog"
+	"os"
 )
 
 // JSONHandler writes logs in JSON.
@@ -56,4 +57,15 @@ func (h *JSONHandler) WithGroup(group string) slog.Handler {
 		level:     h.level,
 		group:     h.group,
 	}
+}
+
+// NewJSONLogger returns a custom logger for Riven.
+func NewJSONLogger() *slog.Logger {
+	options := &slog.HandlerOptions{
+		AddSource: true,
+		Level:     slog.LevelInfo,
+	}
+	handler := NewJSONHandler(os.Stdout, options)
+	logger := slog.New(handler).WithGroup("msg_args")
+	return logger
 }
