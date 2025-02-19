@@ -6,26 +6,33 @@ import (
 	"log/slog"
 )
 
+// JSONHandler writes logs in JSON.
 type JSONHandler struct {
 	writer    io.Writer
 	addSource bool
 	level     slog.Leveler
+	group     string
 }
 
+// NewJSONHandler returns a handler which writes logs in JSON to writer. Like
+// the standard JSON handler, it is configured using options; however, the
+// ReplaceAttr field of options is ignored.
 func NewJSONHandler(writer io.Writer, options *slog.HandlerOptions) *JSONHandler {
 	h := &JSONHandler{
-		writer:    writer,
-		addSource: options.AddSource,
-		level:     options.Level,
+		writer: writer,
 	}
-	if h.level == nil {
-		h.level = slog.LevelInfo
+	if options != nil {
+		h.addSource = options.AddSource
+		h.level = options.Level
 	}
 	return h
 }
 
-// Enabled reports whether handling is done at level.
+// Enabled reports whether the handler handles records at level.
 func (h *JSONHandler) Enabled(_ context.Context, level slog.Level) bool {
+	if h.level == nil {
+		h.level = slog.LevelInfo
+	}
 	return h.level.Level() <= level
 }
 
@@ -35,12 +42,18 @@ func (h *JSONHandler) Handle(_ context.Context, record slog.Record) error {
 	return nil
 }
 
-// WithAttrs does nothing.
+// WithAttrs returns the handler. (It is effectively a no-op.)
 func (h *JSONHandler) WithAttrs(_ []slog.Attr) slog.Handler {
 	return h
 }
 
-// WithGroup does nothing.
-func (h *JSONHandler) WithGroup(_ string) slog.Handler {
-	return h
+// WithGroup returns a new handler which groups all attributes of a record in
+// group (if it is non-empty).
+func (h *JSONHandler) WithGroup(group string) slog.Handler {
+	return &JSONHandler{
+		writer:    h.writer,
+		addSource: h.addSource,
+		level:     h.level,
+		group:     h.group,
+	}
 }
