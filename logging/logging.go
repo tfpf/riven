@@ -2,6 +2,7 @@ package logging
 
 import (
 	"context"
+	"encoding/json"
 	"io"
 	"log/slog"
 	"os"
@@ -39,7 +40,12 @@ func (h *JSONHandler) Enabled(_ context.Context, level slog.Level) bool {
 
 // Handle writes record in JSON on a single line.
 func (h *JSONHandler) Handle(_ context.Context, record slog.Record) error {
-	h.writer.Write([]byte("ok\n"))
+	recordBytes, err := json.Marshal(record)
+	if err != nil {
+		return err
+	}
+	h.writer.Write(recordBytes)
+	h.writer.Write([]byte("\n"))
 	return nil
 }
 
