@@ -6,6 +6,8 @@ import (
 	"io"
 	"log/slog"
 	"os"
+	"runtime"
+	"time"
 )
 
 // JSONHandler writes logs in JSON.
@@ -40,13 +42,25 @@ func (h *JSONHandler) Enabled(_ context.Context, level slog.Level) bool {
 
 // Handle writes record in JSON on a single line.
 func (h *JSONHandler) Handle(_ context.Context, record slog.Record) error {
-	recordBytes, err := json.Marshal(record)
+	details := map[string]any{
+		"level": record.Level,
+		"msg":   record.Message,
+		"time":  record.Time.Format(time.RFC3339),
+	}
+	if h.addSource {
+		frame, _ := runtime.CallersFrames([]uintptr{record.PC}).Next()
+		details["source"] = map[string]any{
+			"function": frame.Function,
+			"line":     frame.Line,
+		}
+	}
+	detailsBytes, err := json.Marshal(details)
 	if err != nil {
 		return err
 	}
-	h.writer.Write(recordBytes)
-	h.writer.Write([]byte("\n"))
-	return nil
+	detailsBytes = append(detailsBytes, '\n')
+	_, err = h.writer.Write(detailsBytes)
+	return err
 }
 
 // WithAttrs returns the handler. (It is effectively a no-op.)
