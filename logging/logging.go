@@ -54,6 +54,15 @@ func (h *JSONHandler) Handle(_ context.Context, record slog.Record) error {
 			"line":     frame.Line,
 		}
 	}
+	detailsGroup := details
+	if h.group != "" {
+		detailsGroup = make(map[string]any)
+		details[h.group] = detailsGroup
+	}
+	record.Attrs(func(attr slog.Attr) bool {
+		detailsGroup[attr.Key] = attr.Value.Any()
+		return true
+	})
 	detailsBytes, err := json.Marshal(details)
 	if err != nil {
 		return err
@@ -75,7 +84,7 @@ func (h *JSONHandler) WithGroup(group string) slog.Handler {
 		writer:    h.writer,
 		addSource: h.addSource,
 		level:     h.level,
-		group:     h.group,
+		group:     group,
 	}
 }
 
