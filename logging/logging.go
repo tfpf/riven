@@ -19,8 +19,8 @@ type JSONHandler struct {
 }
 
 // NewJSONHandler returns a handler which writes logs in JSON to writer. Like
-// the standard JSON handler, it is configured using options; however, the
-// ReplaceAttr field of options is ignored.
+// the standard JSON handler, it is configured using options; however,
+// options.ReplaceAttr is ignored.
 func NewJSONHandler(writer io.Writer, options *slog.HandlerOptions) *JSONHandler {
 	h := &JSONHandler{
 		writer: writer,
@@ -54,17 +54,18 @@ func (h *JSONHandler) Handle(_ context.Context, record slog.Record) error {
 			"line":     frame.Line,
 		}
 	}
-	if record.NumAttrs() > 0 {
+	numAttrs := record.NumAttrs()
+	if numAttrs > 0 {
 		detailsGroup := details
 		if h.group != "" {
-			detailsGroup = make(map[string]any)
+			detailsGroup = make(map[string]any, numAttrs)
 			details[h.group] = detailsGroup
 		}
 		record.Attrs(func(attr slog.Attr) bool {
 			value := attr.Value.Any()
 			if err, ok := value.(error); ok {
 				// Special handling because an error can have any underlying
-				// type. I prefer an error message to an object which will be
+				// type. I prefer an error message to an object which could be
 				// different for different errors.
 				detailsGroup[attr.Key] = err.Error()
 			} else {
