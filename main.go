@@ -12,7 +12,8 @@ import (
 func main() {
 	slog.SetDefault(logging.NewJSONLogger())
 
-	_ = config.Read()
+	cfg := config.Read()
+	cfg.Load()
 
 	a := app.New()
 	w := a.NewWindow("Hello")
