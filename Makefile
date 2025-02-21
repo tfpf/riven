@@ -2,10 +2,10 @@ GO = go
 
 .PHONY: run build fmt
 
-run: build
+run: fmt build
 	./riven
 
-build: fmt
+build:
 	$(GO) build -buildvcs=false -ldflags='-s -w' -v
 
 fmt:
