@@ -64,7 +64,8 @@ func (h *JSONHandler) Handle(_ context.Context, record slog.Record) error {
 			value := attr.Value.Any()
 			if err, ok := value.(error); ok {
 				// Special handling because an error can have any underlying
-				// type. I prefer a concise error message to a clunky object.
+				// type. I prefer an error message to an object which will be
+				// different for different errors.
 				detailsGroup[attr.Key] = err.Error()
 			} else {
 				detailsGroup[attr.Key] = value
