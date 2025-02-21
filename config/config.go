@@ -8,32 +8,28 @@ import (
 )
 
 type Config struct {
-	FyneFont string `json:"FYNE_FONT"`
+	FyneFont string `json:"FYNE_FONT,omitempty"`
 }
 
 // Read looks for the Riven configuration JSON file in the OS-specific user
-// configuration directory and loads it.
-func Read() (*Config, error) {
+// configuration directory and creates a configuration object.
+func Read() *Config {
+	cfg := &Config{}
 	configDir, err := os.UserConfigDir()
 	if err != nil {
-		slog.Error("Could not find user configuration directory", slog.Any("err", err))
-		return nil, err
+		slog.Warn("Could not find user configuration directory", slog.Any("err", err))
+		return cfg
 	}
 	configFile := filepath.Join(configDir, "riven", "config.json")
 	configFileContents, err := os.ReadFile(configFile)
-	cfg := &Config{}
 	if err != nil {
-		slog.Warn("Could not read user configuration file", slog.Any("err", err))
-		return cfg, nil
+		slog.Warn("Could not read user configuration file", slog.Any("err", err), slog.String("file", configFile))
+		return cfg
 	}
 	if err := json.Unmarshal(configFileContents, cfg); err != nil {
-		slog.Error("Could not parse user configuration file", slog.Any("err", err))
-		return nil, err
+		slog.Warn("Could not parse user configuration file", slog.Any("err", err), slog.String("file", configFile))
+		return cfg
 	}
-	if cfg.FyneFont != "" {
-		// Tell Fyne to use this font.
-		os.Setenv("FYNE_FONT", cfg.FyneFont)
-	}
-	slog.Info("Loaded user configuration", slog.Any("cfg", cfg))
-	return cfg, nil
+	slog.Info("Read user configuration file", slog.String("file", configFile), slog.Any("cfg", cfg))
+	return cfg
 }
