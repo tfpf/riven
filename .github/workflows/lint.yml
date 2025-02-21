@@ -9,7 +9,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: '1.23.0'
-      - run: sudo apt-get install libx11-dev libxcursor-dev
+      - run: sudo apt-get install libgl1-mesa-dev
       - run: make build
       - uses: golangci/golangci-lint-action@v6
         with:
