@@ -54,15 +54,24 @@ func (h *JSONHandler) Handle(_ context.Context, record slog.Record) error {
 			"line":     frame.Line,
 		}
 	}
-	detailsGroup := details
-	if h.group != "" {
-		detailsGroup = make(map[string]any)
-		details[h.group] = detailsGroup
+	if record.NumAttrs() > 0 {
+		detailsGroup := details
+		if h.group != "" {
+			detailsGroup = make(map[string]any)
+			details[h.group] = detailsGroup
+		}
+		record.Attrs(func(attr slog.Attr) bool {
+			value := attr.Value.Any()
+			if err, ok := value.(error); ok {
+				// Special handling because an error can have any underlying
+				// type. I prefer a concise error message to a clunky object.
+				detailsGroup[attr.Key] = err.Error()
+			} else {
+				detailsGroup[attr.Key] = value
+			}
+			return true
+		})
 	}
-	record.Attrs(func(attr slog.Attr) bool {
-		detailsGroup[attr.Key] = attr.Value.Any()
-		return true
-	})
 	detailsBytes, err := json.Marshal(details)
 	if err != nil {
 		return err
@@ -95,6 +104,6 @@ func NewJSONLogger() *slog.Logger {
 		Level:     slog.LevelInfo,
 	}
 	handler := NewJSONHandler(os.Stdout, options)
-	logger := slog.New(handler).WithGroup("msg_args")
+	logger := slog.New(handler).WithGroup("msg_attrs")
 	return logger
 }
