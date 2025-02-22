@@ -6,7 +6,7 @@ jobs:
     strategy:
       matrix:
         os: ['macos-13', 'macos-14', 'windows-2022']
-    name: lint on ${{ matrix.os }}
+    name: build and lint on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
