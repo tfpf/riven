@@ -103,7 +103,7 @@ func NewJSONLogger() *slog.Logger {
 		AddSource: true,
 		Level:     slog.LevelInfo,
 	}
-	handler := NewJSONHandler(os.Stdout, options)
+	handler := NewJSONHandler(os.Stdout, nil)
 	logger := slog.New(handler).WithGroup("msg_attrs")
 	return logger
 }
