@@ -6,6 +6,7 @@ jobs:
     strategy:
       matrix:
         os: ['macos-13', 'macos-14', 'windows-2022']
+    name: lint on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -13,6 +14,7 @@ jobs:
         with:
           go-version: '1.23.0'
       - run: make build
+        name: Download dependencies for linter to examine
       - uses: golangci/golangci-lint-action@v6
         with:
           version: v1.60
