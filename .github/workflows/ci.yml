@@ -1,15 +1,17 @@
-name: lint
+name: ci
 on: [push, workflow_dispatch]
 
 jobs:
-  Go:
-    runs-on: windows-latest
+  lint:
+    strategy:
+      matrix:
+        os: ['macos-13', 'macos-14', 'windows-2022']
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
           go-version: '1.23.0'
-      - run: make build
       - uses: golangci/golangci-lint-action@v6
         with:
           version: v1.60
