@@ -1,8 +1,10 @@
 GO = go
 
-.PHONY: run build fmt
+.PHONY: all run build fmt
 
-run: fmt build
+all: fmt run
+
+run: build
 	./riven
 
 build:
