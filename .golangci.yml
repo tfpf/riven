@@ -1,2 +1,14 @@
 linters:
+  disable:
+    - exhaustruct
+    - nlreturn
   enable-all: true
+
+linters-settings:
+  depguard:
+    rules:
+      main:
+        allow:
+          - $gostd
+          - fyne.io/fyne
+          - github.com/tfpf/riven

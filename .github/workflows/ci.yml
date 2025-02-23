@@ -21,7 +21,7 @@ jobs:
         with:
           go-version: '1.23.0'
       - run: make build
-        name: Build (download dependencies to prevent linter timeout)
+        name: Build (download dependencies to prevent timeout when linting)
       - uses: golangci/golangci-lint-action@v6
         with:
           version: v1.60
