@@ -2,6 +2,13 @@ name: ci
 on: [push, workflow_dispatch]
 
 jobs:
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check code formatting (Windows checkouts contain CRLF, failing `gofmt`)
+        run: test -z $(gofmt -l .)
+
   build_lint:
     strategy:
       matrix:
@@ -15,9 +22,8 @@ jobs:
           go-version-file: go.mod
       - run: make build
         name: Build (download dependencies to prevent timeout when linting)
-      - if: matrix.os == 'windows-2022'
-        uses: golangci/golangci-lint-action@v6
+      - uses: golangci/golangci-lint-action@v6
         with:
           skip-cache: true
           version: v1.60
-        name: Lint (skip on Windows because it doesn't like CRLF line endings)
+        name: Lint
