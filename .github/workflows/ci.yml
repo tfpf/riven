@@ -12,9 +12,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version-file: go.mod
+          go-version: '1.23.0'
       - run: make build
-        name: Build (download dependencies to prevent timeout when linting)
+        name: Build (download dependencies to prevent linter timeout)
       - uses: golangci/golangci-lint-action@v6
         with:
           version: v1.60
