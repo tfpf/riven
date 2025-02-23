@@ -25,8 +25,8 @@ func NewJSONHandler(writer io.Writer, options *slog.HandlerOptions) *JSONHandler
 	h := &JSONHandler{
 		writer: writer,
 	}
-		h.addSource = options.AddSource
-		h.level = options.Level
+	h.addSource = options.AddSource
+	h.level = options.Level
 	return h
 }
 
