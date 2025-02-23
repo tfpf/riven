@@ -8,7 +8,7 @@ import (
 )
 
 type Config struct {
-	FyneFont string `json:"FYNE_FONT,omitempty"`
+	FyneFont string `json:"fyneFont,omitempty"`
 }
 
 // Read looks for the Riven configuration JSON file in the OS-specific user

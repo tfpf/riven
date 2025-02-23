@@ -2,6 +2,9 @@ linters:
   disable:
     - exhaustruct
     - nlreturn
+    - varnamelen
+    - wrapcheck
+    - wsl
   enable-all: true
 
 linters-settings:
