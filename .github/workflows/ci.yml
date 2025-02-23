@@ -2,6 +2,13 @@ name: ci
 on: [push, workflow_dispatch]
 
 jobs:
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check code formatting
+        run: test -z $(gofmt -l .)
+
   build_lint:
     strategy:
       matrix:
