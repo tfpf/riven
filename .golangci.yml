@@ -2,7 +2,6 @@ linters:
   disable:
     - exhaustruct
     - gci
-    - gofmt
     - gofumpt
     - goimports
     - nlreturn
