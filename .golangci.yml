@@ -1,0 +1,20 @@
+linters:
+  disable:
+    - exhaustruct
+    - gci
+    - gofumpt
+    - goimports
+    - nlreturn
+    - varnamelen
+    - wrapcheck
+    - wsl
+  enable-all: true
+
+linters-settings:
+  depguard:
+    rules:
+      main:
+        allow:
+          - $gostd
+          - fyne.io/fyne
+          - github.com/tfpf/riven
