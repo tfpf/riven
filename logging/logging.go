@@ -18,9 +18,9 @@ type JSONHandler struct {
 	group     string
 }
 
-// NewJSONHandler returns a handler which writes logs in JSON to writer. Like
-// the standard JSON handler, it is configured using options; however,
-// options.ReplaceAttr is ignored.
+// NewJSONHandler returns a handler which writes logs in JSON to writer if it
+// is not nil and standard output otherwise. Like the standard JSON handler, it
+// is configured using options; however, options.ReplaceAttr is ignored.
 func NewJSONHandler(writer io.Writer, options *slog.HandlerOptions) *JSONHandler {
 	h := &JSONHandler{
 		writer: writer,
@@ -79,6 +79,9 @@ func (h *JSONHandler) Handle(_ context.Context, record slog.Record) error {
 		return err
 	}
 	detailsBytes = append(detailsBytes, '\n')
+	if h.writer == nil {
+		h.writer = os.Stdout
+	}
 	_, err = h.writer.Write(detailsBytes)
 	return err
 }
