@@ -14,7 +14,7 @@ type Config struct {
 // Read looks for the Riven configuration JSON file in the OS-specific user
 // configuration directory and creates a configuration object from it.
 func Read() *Config {
-	cfg := &Config{}
+cfg := &Config{}
 	configDir, err := os.UserConfigDir()
 	if err != nil {
 		slog.Warn("Could not find user configuration directory", slog.Any("err", err))
