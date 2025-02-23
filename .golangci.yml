@@ -1,6 +1,8 @@
 linters:
   disable:
     - exhaustruct
+    - gci
+    - goimports
     - nlreturn
     - varnamelen
     - wrapcheck
