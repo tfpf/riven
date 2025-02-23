@@ -18,5 +18,3 @@ linters-settings:
           - $gostd
           - fyne.io/fyne
           - github.com/tfpf/riven
-  staticcheck:
-    checks: ['all']
