@@ -49,9 +49,11 @@ func (h *JSONHandler) Handle(_ context.Context, record slog.Record) error {
 	}
 	if h.addSource {
 		frame, _ := runtime.CallersFrames([]uintptr{record.PC}).Next()
-		details["source"] = map[string]any{
-			"function": frame.Function,
-			"line":     frame.Line,
+		if frame.Function != "" || frame.Line != 0 {
+			details["source"] = map[string]any{
+				"function": frame.Function,
+				"line":     frame.Line,
+			}
 		}
 	}
 	numAttrs := record.NumAttrs()
