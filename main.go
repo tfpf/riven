@@ -14,9 +14,7 @@ import (
 func main() {
 	slog.SetDefault(logging.NewJSONLogger())
 
-	cfg := config.Read()
-	be := backend.NewBackend(cfg)
-	fe := frontend.NewFrontend(cfg, be)
+	fe := frontend.NewFrontend(nil, nil)
 	fe.MainLoop()
 
 	a := app.New()

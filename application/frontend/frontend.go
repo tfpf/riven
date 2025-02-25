@@ -12,15 +12,20 @@ type frontend struct {
 
 // Frontend handles user-facing content.
 type Frontend interface {
-	// MainLoop does stuff.
 	MainLoop()
 }
 
 // NewFrontend returns an object to handle user-facing content.
 func NewFrontend(cfg *config.Config, be backend.Backend) Frontend {
-	return &frontend{
+	fe := &frontend{
 		cfg: cfg,
 		be:  be,
+	}
+	if fe.cfg == nil {
+	    fe.cfg = config.Read()
+	}
+	if fe.be == nil {
+	    fe.be = backend.NewBackend()
 	}
 }
 
