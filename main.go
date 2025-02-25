@@ -13,8 +13,7 @@ func main() {
 	slog.SetDefault(logging.NewJSONLogger())
 
 	cfg := &config.Config{}
-	cfg.Read()
-	slog.Info("", slog.Any("cfg", cfg))
+	_ = cfg.Read()
 
 	a := app.New()
 	w := a.NewWindow("Hello")

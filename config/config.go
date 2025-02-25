@@ -53,7 +53,7 @@ func (cfg *Config) Write() error {
 	if err := cfg.locate(); err != nil {
 		return err
 	}
-	configFileContents, err := json.Marshal(cfg)
+	configFileContents, err := json.MarshalIndent(cfg, "", "  ")
 	if err != nil {
 		slog.Error("Could not encode Riven configuration", slog.Any("err", err), slog.Any("cfg", cfg))
 		return err
