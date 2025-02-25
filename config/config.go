@@ -43,7 +43,7 @@ func (cfg *Config) Read() error {
 		slog.Error("Could not decode Riven configuration file", slog.Any("err", err), slog.String("file", cfg.configFile))
 		return err
 	}
-	slog.Error("Read Riven configuration file", slog.String("file", cfg.configFile), slog.Any("cfg", cfg))
+	slog.Info("Read Riven configuration file", slog.String("file", cfg.configFile), slog.Any("cfg", cfg))
 	return nil
 }
 
