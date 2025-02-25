@@ -21,7 +21,7 @@ func (cfg *Config) locate() error {
 	}
 	configDir, err := os.UserConfigDir()
 	if err != nil {
-		slog.Warn("Could not find user configuration directory", slog.Any("err", err))
+		slog.Error("Could not find user configuration directory", slog.Any("err", err))
 		return err
 	}
 	cfg.configFile = filepath.Join(configDir, "riven", "config.json")
@@ -36,14 +36,14 @@ func (cfg *Config) Read() error {
 	}
 	configFileContents, err := os.ReadFile(cfg.configFile)
 	if err != nil {
-		slog.Warn("Could not read Riven configuration file", slog.Any("err", err), slog.String("file", cfg.configFile))
+		slog.Error("Could not read Riven configuration file", slog.Any("err", err), slog.String("file", cfg.configFile))
 		return err
 	}
 	if err := json.Unmarshal(configFileContents, cfg); err != nil {
-		slog.Warn("Could not decode Riven configuration file", slog.Any("err", err), slog.String("file", cfg.configFile))
+		slog.Error("Could not decode Riven configuration file", slog.Any("err", err), slog.String("file", cfg.configFile))
 		return err
 	}
-	slog.Info("Read Riven configuration file", slog.String("file", cfg.configFile), slog.Any("cfg", cfg))
+	slog.Error("Read Riven configuration file", slog.String("file", cfg.configFile), slog.Any("cfg", cfg))
 	return nil
 }
 
@@ -55,11 +55,11 @@ func (cfg *Config) Write() error {
 	}
 	configFileContents, err := json.Marshal(cfg)
 	if err != nil {
-		slog.Warn("Could not encode Riven configuration", slog.Any("err", err), slog.Any("cfg", cfg))
+		slog.Error("Could not encode Riven configuration", slog.Any("err", err), slog.Any("cfg", cfg))
 		return err
 	}
 	if err := os.WriteFile(cfg.configFile, configFileContents, 0644); err != nil {
-		slog.Warn("Could not write Riven configuration file", slog.Any("err", err), slog.String("file", cfg.configFile))
+		slog.Error("Could not write Riven configuration file", slog.Any("err", err), slog.String("file", cfg.configFile))
 		return err
 	}
 	slog.Info("Wrote Riven configuration file", slog.String("file", cfg.configFile), slog.Any("cfg", cfg))
