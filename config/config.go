@@ -40,7 +40,7 @@ func (cfg *Config) Read() error {
 		return err
 	}
 	if err := json.Unmarshal(configFileContents, cfg); err != nil {
-		slog.Error("Could not decode Riven configuration file", slog.Any("err", err), slog.String("file", cfg.configFile))
+		slog.Error("Could not decode Riven configuration", slog.Any("err", err), slog.String("file", cfg.configFile))
 		return err
 	}
 	slog.Info("Read Riven configuration file", slog.String("file", cfg.configFile), slog.Any("cfg", cfg))
