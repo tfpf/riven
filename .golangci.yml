@@ -21,3 +21,6 @@ linters-settings:
   gosec:
     excludes:
       - G306
+  mnd:
+    ignored-numbers:
+      - '0644'
