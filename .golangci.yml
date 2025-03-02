@@ -18,3 +18,9 @@ linters-settings:
           - $gostd
           - fyne.io/fyne
           - github.com/tfpf/riven
+  gosec:
+    excludes:
+      - G306
+  mnd:
+    ignored-numbers:
+      - '0644'

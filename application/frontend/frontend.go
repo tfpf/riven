@@ -21,12 +21,7 @@ func NewFrontend(cfg *config.Config, be backend.Backend) Frontend {
 		cfg: cfg,
 		be:  be,
 	}
-	if fe.cfg == nil {
-	    fe.cfg = config.Read()
-	}
-	if fe.be == nil {
-	    fe.be = backend.NewBackend()
-	}
+	return fe
 }
 
 func (fe *frontend) MainLoop() {
